@@ -1,9 +1,9 @@
 import { Nunito } from 'next/font/google'
 
-import './globals.css'
-import { RegisterModal } from './components/modals'
-import ToastProvider from './providers/ToastProvider'
+import { LoginModal, RegisterModal } from './components/modals'
 import { Navbar } from './components/navbar'
+import './globals.css'
+import ToastProvider from './providers/ToastProvider'
 
 export const metadata = {
   title: 'Airbnb',
@@ -20,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={font.className}>
         <ToastProvider />
         <RegisterModal />
+        <LoginModal />
         <Navbar />
         {children}
       </body>

@@ -14,39 +14,39 @@ import { toast } from 'react-hot-toast'
 import Button from '../button/Button'
 import useLoginModal from '@/app/hooks/useLoginModal'
 
-const RegisterModal = () => {
-  const registerModal = useRegisterModal()
+const LoginModal = () => {
   const loginModal = useLoginModal()
+  const registerModal = useRegisterModal()
   const [isLoading, setIsLoading] = useState(false)
 
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<FieldValues>({ defaultValues: { name: '', email: '', password: '' } })
+  } = useForm<FieldValues>({ defaultValues: { email: '', password: '' } })
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true)
 
     axios
-      .post('/api/register', data)
+      .post('/api/login', data)
       .then(() => {
-        registerModal.onClose
+        loginModal.onClose
       })
       .catch((err) => toast.error('something went wrong'))
       .finally(() => setIsLoading(false))
   }
 
-  const signIn = () => {
-    registerModal.onClose()
-    loginModal.onOpen()
+  const signUp = () => {
+    loginModal.onClose()
+    registerModal.onOpen()
   }
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
-      <Heading title='Welcome to Airbnb' subTitle='Create an account' />
+      <Heading title='Welcome to back' subTitle='Login to your account' />
       <Input id='email' label='Email' disabled={isLoading} register={register} errors={errors} required />
-      <Input id='name' label='Name' disabled={isLoading} register={register} errors={errors} required />
+      {/* <Input id='name' label='Name' disabled={isLoading} register={register} errors={errors} required /> */}
       <Input
         id='password'
         type='password'
@@ -66,9 +66,9 @@ const RegisterModal = () => {
       <Button outline label='Continue with Github' icon={AiFillGithub} onClick={() => {}} />
       <div className='text-neutral-500 text-center mt-4 font-ligh'>
         <div className='justify-center flex flex-row items-center gap-2'>
-          <div>Already hava an account?</div>
-          <div onClick={signIn} className='text-neutral-800 cursor-pointer hover:underline'>
-            Login
+          <div>Don't have an account</div>
+          <div onClick={signUp} className='text-neutral-800 cursor-pointer hover:underline'>
+            Register
           </div>
         </div>
       </div>
@@ -78,10 +78,10 @@ const RegisterModal = () => {
   return (
     <Modal
       disabled={isLoading}
-      isOpen={registerModal.isOpen}
-      title='Register'
-      actionLabel='Continue'
-      onClose={registerModal.onClose}
+      isOpen={loginModal.isOpen}
+      title='Login'
+      actionLabel='Login'
+      onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
@@ -89,4 +89,4 @@ const RegisterModal = () => {
   )
 }
 
-export default RegisterModal
+export default LoginModal
